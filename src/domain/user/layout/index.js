@@ -1,22 +1,29 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import {
+    CssBaseline, 
+    Collapse, 
+    List, 
+    Toolbar, 
+    AppBar, 
+    Drawer, 
+    Typography, 
+    Divider, 
+    IconButton,
+    ListItem,
+    ListItemIcon,
+    ListItemText
+} from '@material-ui/core';
+import {
+    ChevronLeft, 
+    ExpandLess, 
+    ExpandMore, 
+    ChevronRight, 
+    Menu,  
+    Inbox, 
+    Mail 
+} from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -68,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9) + 1,
     },
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
@@ -85,14 +95,27 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
+  const [openDrawer, setOpenDrawer] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [nextListOpen, setNextListOpen] = React.useState(false);
+  const [lastListOpen, setLastListOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpenDrawer(true);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpenDrawer(false);
+  };
+
+  const handleTopListClick = () => {
+    setOpen(!open);
+  };
+  const handleNextListClick = () => {
+    setNextListOpen(!nextListOpen);
+  };
+  const handleLastListClick = () => {
+    setLastListOpen(!lastListOpen);
   };
 
   return (
@@ -101,61 +124,107 @@ export default function MiniDrawer() {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: openDrawer,
         })}
       >
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
+            aria-label="openDrawer drawer"
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: openDrawer,
             })}
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            jaroTracker
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
+          [classes.drawerOpen]: openDrawer,
+          [classes.drawerClose]: !openDrawer,
         })}
         classes={{
           paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerOpen]: openDrawer,
+            [classes.drawerClose]: !openDrawer,
           }),
         }}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Home', 'My Issues', 'Discuss', 'Reports'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Mail />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+            <ListItem button onClick={handleTopListClick}>
+                <ListItemIcon>
+                    <Inbox />
+                </ListItemIcon>
+                <ListItemText primary="Your Team" />
+                {open ? <ExpandLess /> : <ExpandMore />}
+            </ListItem> 
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItem button className={classes.nested} onClick={handleNextListClick}>
+                        <ListItemIcon>
+                            <Mail />
+                        </ListItemIcon>
+                        <ListItemText primary="Jaroslaw" />
+                        {nextListOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={nextListOpen} timeout="auto" unmountOnExit className={classes.nested}>
+                    <List>
+                        {['Issues',  'Projects'].map((text, index) => {
+                           return text === 'Issues'? 
+                           (
+                            <>
+                                <ListItem button onClick={handleLastListClick}>
+                                    <ListItemIcon>
+                                        <Inbox />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Issues" />
+                                    {lastListOpen ? <ExpandLess /> : <ExpandMore />}
+                                </ListItem>
+                                <Collapse in={lastListOpen} timeout="auto" unmountOnExit className={classes.nested}>
+                                <List>
+                                    {['BackLog', 'All', 'Board'].map((text, index) => (
+                                    <ListItem button key={text}>
+                                        <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Mail />}</ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                    ))}
+                                </List> 
+                                </Collapse>
+                            </>
+                           ) :
+                           (
+                            <ListItem button key={text}>
+                                <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Mail />}</ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        )
+                        })}
+                    </List>
+                    </Collapse>
+                </List>
+            </Collapse>
         </List>
       </Drawer>
       <main className={classes.content}>
