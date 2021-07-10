@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
+    Badge,
     CssBaseline, 
     Collapse, 
     List, 
@@ -19,7 +20,9 @@ import {
     ChevronLeft, 
     ExpandLess, 
     ExpandMore, 
-    ChevronRight, 
+    ChevronRight,
+    Notifications,
+    AccountCircle,
     Menu,  
     Inbox, 
     Mail 
@@ -30,6 +33,9 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  grow: {
+    flexGrow: 1,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -56,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
   },
   drawerOpen: {
     width: drawerWidth,
@@ -99,6 +111,7 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(false);
   const [nextListOpen, setNextListOpen] = React.useState(false);
   const [lastListOpen, setLastListOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -117,6 +130,12 @@ export default function MiniDrawer() {
   const handleLastListClick = () => {
     setLastListOpen(!lastListOpen);
   };
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const menuId = 'primary-search-account-menu';
 
   return (
     <div className={classes.root}>
@@ -142,6 +161,29 @@ export default function MiniDrawer() {
           <Typography variant="h6" noWrap>
             jaroTracker
           </Typography>
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <Mail/>
+              </Badge>
+            </IconButton>
+            <IconButton aria-label="show 17 new notifications" color="inherit">
+              <Badge badgeContent={17} color="secondary">
+                <Notifications/>
+              </Badge>
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle/>
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
