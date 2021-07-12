@@ -6,6 +6,8 @@ import {
     AppBar, 
     Typography, 
     IconButton,
+    Tooltip,
+    Zoom,
 } from '@material-ui/core';
 import {
     Notifications,
@@ -18,7 +20,7 @@ import {
 
   const menuId = 'primary-search-account-menu';
 
-const Header = ({handleDrawerOpen, classes, openDrawer}) => {
+const Header = ({handleDrawerOpen, classes, openDrawer, toggleModal}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,20 +50,28 @@ const Header = ({handleDrawerOpen, classes, openDrawer}) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton color="">
-              <Create/>
-            </IconButton>
-            <IconButton color="">
-              <Search/>
-            </IconButton>
-            <IconButton color="">
-              <Settings/>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="">
-              <Badge badgeContent={17} color="secondary">
-                <Notifications/>
-              </Badge>
-            </IconButton>
+            <Tooltip title="Add issue" arrow TransitionComponent={Zoom}>
+              <IconButton color="" onClick={toggleModal}>
+                <Create/>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Search" arrow TransitionComponent={Zoom}>
+              <IconButton color="">
+                <Search/>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="View Settings" arrow TransitionComponent={Zoom}>
+              <IconButton color="">
+                <Settings/>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="17 new notifications" arrow TransitionComponent={Zoom}>
+              <IconButton aria-label="show 17 new notifications" color="">
+                <Badge badgeContent={17} color="secondary">
+                  <Notifications/>
+                </Badge>
+              </IconButton>
+            </Tooltip>
             <IconButton
               edge="end"
               aria-label="account of current user"

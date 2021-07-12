@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import {CssBaseline, Typography} from '@material-ui/core';
 
@@ -6,11 +6,22 @@ import {CssBaseline, Typography} from '@material-ui/core';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import useStyles from './LayoutStyle';
+import Modal from '../../../components/Modal';
+
 
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [open, setOpen] = React.useState(false);
+ 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const toggleModal = () => {
+    setOpen(!open);
+  };
  
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -27,6 +38,7 @@ export default function MiniDrawer() {
         handleDrawerOpen={handleDrawerOpen}
         classes={classes}
         openDrawer={openDrawer}
+        toggleModal={toggleModal}
         />
 
       <Sidebar 
@@ -34,6 +46,10 @@ export default function MiniDrawer() {
         classes={classes}
         openDrawer={openDrawer}
         theme={theme}
+      />
+      <Modal
+        open={open}
+        handleClose={handleClose}
       />
      <main className={classes.content}>
         <div className={classes.toolbar} />
