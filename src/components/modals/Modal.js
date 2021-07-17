@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Fade, Modal, Backdrop, Grid, Paper, Typography, InputBase} from '@material-ui/core';
-import {FindInPage, ChevronRight, Group} from '@material-ui/icons';
+import { Box, Fade, Modal, Backdrop, Grid, Paper, Typography, InputBase, Button} from '@material-ui/core';
+import {FindInPage, ChevronRight, Group, MoreHoriz, AttachFile, PlaylistAddCheck} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -38,6 +38,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2em',
     marginLeft: '1.2rem',
     color: '#9f9f9f'
+  },
+  paper: {
+     width: '5rem',
+     fontSize: '.95em',
+     padding: '3px',
+     background: '#efefff'
+  },
+  bottom: {
+    marginTop: '1rem',
+    borderTop: '1px solid #efefef',
+    paddingTop: '1.5rem'
   }
   
 }));
@@ -63,7 +74,7 @@ export default function TransitionsModal({open, handleClose}) {
               <Grid  container spacing={2} >
                   <Grid xs={9} container spacing={2} className={classes.heading}>
                     <Grid xs={3}> 
-                      <Paper><Group className={classes.icon}/>JAR</Paper>
+                      <Paper className={classes.paper}><Group className={classes.icon}/>JAR</Paper>
                     </Grid>
                    <Grid xs={1}>
                     <ChevronRight className={classes.icon} style={{fontSize: '1.5em', marginTop: '.3em'}}/>
@@ -100,11 +111,38 @@ export default function TransitionsModal({open, handleClose}) {
                </Box>
              </Box>
 
-            <Grid container spacing={3}>
-                <Grid>
-
+            <Grid container style={{marginTop: '2rem'}} >
+                <Grid xs={9} container spacing={2}>
+                   <Grid xs={3}>
+                    <Paper className={classes.paper}><PlaylistAddCheck className={classes.icon} style={{fontSize: '1.2em'}}/>Todo</Paper>
+                   </Grid>
+                   <Grid xs={3}>
+                    <Paper className={classes.paper}><Group className={classes.icon} style={{fontSize: '1.2em'}}/>Priority</Paper>
+                   </Grid>
+                   <Grid xs={3}>
+                    <Paper className={classes.paper}><Group className={classes.icon} style={{fontSize: '1.2em'}}/>Assignee</Paper>
+                   </Grid>
+                   <Grid xs={3}>
+                    <Paper className={classes.paper}><Group className={classes.icon} style={{fontSize: '1.2em'}}/>Label</Paper>
+                   </Grid>
+                </Grid>
+                <Grid xs={3}>
+                <Grid xs={1}>
+                    <MoreHoriz className={classes.icon}/>
+                   </Grid>
                 </Grid>
             </Grid>
+            
+            <Box className={classes.bottom}>
+              <Grid container spacing={3}>
+                <Grid xs={6}>
+                  <AttachFile className={classes.icon} style={{fontSize: '1.5em'}}/>
+                </Grid>
+                <Grid xs={6}>
+                  <Button variant="contained" color="primary" size="small" style={{float: 'right'}}>Save issue</Button>
+                </Grid>
+              </Grid>
+            </Box>
               
           </Box>
         </Fade>

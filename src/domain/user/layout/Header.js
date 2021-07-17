@@ -8,6 +8,7 @@ import {
     IconButton,
     Tooltip,
     Zoom,
+    Fab,
 } from '@material-ui/core';
 import {
     Notifications,
@@ -15,12 +16,13 @@ import {
     Menu,  
     Search,
     Create,
-    Settings
+    Settings,
+    Add
   } from '@material-ui/icons';
 
   const menuId = 'primary-search-account-menu';
 
-const Header = ({handleDrawerOpen, classes, openDrawer, toggleModal}) => {
+const Header = ({handleDrawerOpen, classes, openDrawer, toggleModal, toggleSearch}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,12 +54,16 @@ const Header = ({handleDrawerOpen, classes, openDrawer, toggleModal}) => {
           <div className={classes.sectionDesktop}>
             <Tooltip title="Add issue" arrow TransitionComponent={Zoom}>
               <IconButton color="" onClick={toggleModal}>
-                <Create/>
+                <Fab  aria-label="edit" style={{backgroundColor: '#444488', color: '#fff'}}>
+                  <Add/>
+                </Fab>
               </IconButton>
             </Tooltip>
             <Tooltip title="Search" arrow TransitionComponent={Zoom}>
-              <IconButton color="">
+              <IconButton color="" onClick={toggleSearch}>
+               <Fab color="secondary" aria-label="search">
                 <Search/>
+               </Fab>
               </IconButton>
             </Tooltip>
             <Tooltip title="View Settings" arrow TransitionComponent={Zoom}>
