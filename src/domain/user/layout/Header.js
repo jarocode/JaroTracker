@@ -94,4 +94,4 @@ const Header = ({handleDrawerOpen, classes, openDrawer, toggleModal, toggleSearc
     )
 }
 
-export default Header
+export default Header;

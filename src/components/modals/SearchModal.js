@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Fade, Backdrop, Modal, IconButton, InputBase, Divider } from '@material-ui/core';
-import {Cancel, Search} from '@material-ui/icons';
+import { Paper, Fade, Backdrop, Modal, IconButton, InputBase, Divider, Popover, Button, Typography} from '@material-ui/core';
+import {Cancel, Search, ArrowDropDown} from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +34,23 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+
+  
+
 const SearchModal = ({open, handleClose}) => {
     const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClosePop = () => {
+        setAnchorEl(null);
+    };
+
+  const openPopover = Boolean(anchorEl);
+  const id = openPopover ? 'simple-popover' : undefined;
     return (
        <div>
      
@@ -61,6 +76,28 @@ const SearchModal = ({open, handleClose}) => {
                         placeholder="Search issues..."
                         inputProps={{ 'aria-label': 'search issues' }} 
                     />
+                    <Divider className={classes.divider} orientation="vertical" />
+                    <div>
+                        <Button aria-describedby={id}  onClick={handleClick} style={{textTransform: 'none'}} endIcon={<ArrowDropDown/>}>
+                            Filter issues
+                        </Button>
+                        <Popover
+                            id={id}
+                            open={openPopover}
+                            anchorEl={anchorEl}
+                            onClose={handleClosePop}
+                            anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                            }}
+                        >
+                            <div style={{width: '25rem', height: '20rem'}}></div>
+                        </Popover>
+                    </div>
                     <Divider className={classes.divider} orientation="vertical" />
                     <IconButton type="submit" className={classes.iconButton} aria-label="search">
                         <Cancel/>
